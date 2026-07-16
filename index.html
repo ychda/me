@@ -1,107 +1,26 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="h-full">
 
 <head>
     <meta charset="UTF-8">
-    <title>站点文件目录</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui;
-        }
-
-        body {
-            max-width: 1000px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        h1 {
-            margin-bottom: 30px;
-            color: #222;
-        }
-
-        .folder {
-            margin: 20px 0;
-        }
-
-        .folder h2 {
-            font-size: 18px;
-            margin: 12px 0 8px;
-            color: #0969da;
-        }
-
-        ul {
-            list-style: none;
-            padding-left: 16px;
-        }
-
-        li {
-            padding: 6px 0;
-        }
-
-        a {
-            color: #0969da;
-            text-decoration: none;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello, World!</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body>
-    <h1>页面文件索引</h1>
-    <div id="list"></div>
+<body class="h-full flex flex-col max-w-9/12 mx-auto bg-gray-200">
+    <header class="my-10 bg-orange-500 m-0 pl-5 py-10 rounded-md">
+        <h1 class="text-5xl text-white">Hello, World!</h1>
+    </header>
 
-    <script>
-        // 配置：需要扫描的后缀，只展示html文件
-        const allowExt = ['.html'];
-        // 排除首页自身，避免循环
-        const excludeFile = 'index.html';
+    <main class="flex-1 border-y-1 px-5 py-5 indent-8">
+        <p class="">这里保存一些网页，不使用各种框架。</p>
+        <p class="a"></p>
+    </main>
 
-        // 递归读取目录结构（GitHub Pages静态目录API）
-        async function scanDir(path = './') {
-            const res = await fetch(path, { headers: { 'Accept': 'application/json' } });
-            const entries = await res.json();
-            const container = document.getElementById('list');
-
-            for (const entry of entries) {
-                const name = entry.name;
-                const fullPath = path + name;
-
-                // 文件夹：递归遍历
-                if (entry.type === 'directory') {
-                    const wrap = document.createElement('div');
-                    wrap.className = 'folder';
-                    wrap.innerHTML = `<h2>📁 ${name}</h2><ul data-path="${fullPath}/"></ul>`;
-                    container.appendChild(wrap);
-                    // 异步递归子目录
-                    scanDir(fullPath + '/');
-                }
-
-                // 文件：只展示html，排除首页
-                if (entry.type === 'file') {
-                    if (name === excludeFile) continue;
-                    const ext = name.slice(name.lastIndexOf('.'));
-                    if (!allowExt.includes(ext)) continue;
-
-                    const li = document.createElement('li');
-                    li.innerHTML = `<a href="${fullPath}">${name}</a>`;
-                    // 找到对应父目录ul，没有就放根列表
-                    let parentUl = document.querySelector(`ul[data-path="${path}"]`);
-                    if (!parentUl) parentUl = container;
-                    parentUl.appendChild(li);
-                }
-            }
-        }
-
-        // 启动扫描
-        scanDir('./');
-    </script>
+    <footer class="px-5 py-5 mt-10 mb-5">
+        &copy; 2026 <a href="https://github.com/ychda">@ychda</a>
+    </footer>
 </body>
 
 </html>
